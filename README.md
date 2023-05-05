@@ -1,5 +1,4 @@
-# SubQuery - Starter Package
-
+# SubQuery - Moonbeam ERC721 indexer
 This is a very basic ERC721 indexer on Moonbeam using Subquery Substrate Frontier EVM.
 
 ## To run it on docker:
