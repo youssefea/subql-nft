@@ -1,15 +1,35 @@
 import { subqlTest } from "@subql/testing";
-import { StarterEntity } from "../types";
+import { Transfer,Token,Contract,Owner } from "../types";
+
+let newToken= new Token("1");
+
+
 
 subqlTest(
     "handleBlock test",
-    990,
-    [],
+    3497330,
     [
-      StarterEntity.create({
-        id: '0x44e94d2e22be8f915c19e18d221260232516c40db63553d8e2d9c5ff63aae9c1', 
-        field1: 990,
+      Contract.create({
+        id: '0x1FF2ADAa387dD27c22b31086E658108588eDa03a',
+        name: 'CryptoPunks',
+        symbol: 'PUNK',
+        totalSupply: BigInt(10000),
+      }),
+      Transfer.create({
+        id: '0x1FF2ADAa387dD27c22b31086E658108588eDa03aTRANSFERID',
+        tokenId:"1",
+        fromId: '0x00000000000FROM',
+        toId: '0x00000000000TO',
+        timestamp: BigInt(1627440000),
+        block: BigInt(3497330),
+        transactionHash: '0x1FF2ADAa387dD27c22b31086E658108588eDa03aTRANSACTIONHASH',
       }),
     ],
-    'handleBlock',
+    [
+      Owner.create({
+        id: '0x00000000000TO', 
+        balance: BigInt(1),
+      }),
+    ],
+    'handleTransfer',
   );

@@ -24,18 +24,22 @@
     "ipfs-unixfs": "6.0.6"
   },
   "dependencies": {
-    "moonbeam-types-bundle": "^2.0.7"
+    "atob": "^2.1.2",
+    "moonbeam-types-bundle": "^2.0.7",
+    "node-blob": "^0.0.2",
+    "typechain": "^8.1.1"
   },
   "devDependencies": {
     "@polkadot/api": "^10",
     "@subql/cli": "latest",
     "@subql/frontier-evm-processor": "latest",
-    "@subql/types": "^1.1.0",
-    "typescript": "^4.6.2",
+    "@subql/node": "latest",
     "@subql/testing": "latest",
-    "@subql/node": "latest"
+    "@subql/types": "^1.1.0",
+    "typescript": "^4.6.2"
   },
   "exports": {
-    "chaintypes": "src/chaintypes.ts"
+    "frontierEvm": "./node_modules/@subql/frontier-evm-processor/dist/index.js",
+    "chaintypes": "./src/chaintypes.ts"
   }
 }

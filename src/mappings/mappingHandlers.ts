@@ -5,7 +5,9 @@ import {
   FrontierEvmEvent,
   FrontierEvmCall,
 } from "@subql/frontier-evm-processor";
-//import * as instance from "../types/abi-interfaces/Erc721Abi";
+global.atob = require("atob");
+global.Blob = require('node-blob');
+import { ethers } from "ethers";
 import { BigNumber } from "ethers";
 import { Erc721Abi__factory } from "../types/contracts";
 import { FrontierEthProvider } from "@subql/frontier-evm-processor";
@@ -21,13 +23,20 @@ export async function handleTransfer(
   event: FrontierEvmEvent<TransferEventArgs>
 ): Promise<void> {
   
+  logger.info('New log found at ' + event.blockNumber.toString());
   let previousOwner = await Owner.get(event.args.from);
+  logger.info('got here 1 ');
   let newOwner = await Owner.get(event.args.to);
-  let token = await Token.get(event.args.tokenId);
+  logger.info('got here 2');
+  let token = await Token.get(event.args.tokenId.toString());
+  logger.info('got here 3');
   let transferId = event.transactionHash;
+  logger.info('got here 4');
   let transfer = await Transfer.get(transferId);
+  logger.info('got here 5');
   let contract = await Contract.get(event.address);
-  let provider= new FrontierEthProvider;
+  logger.info('got here ');
+  let provider = new ethers.providers.JsonRpcProvider("https://moonbeam.blastapi.io/bc88ffcb-8768-4dc8-aee4-5bbb4e285a73");
   const instance = Erc721Abi__factory.connect(event.address, provider );
 
 
@@ -51,12 +60,12 @@ export async function handleTransfer(
   }
 
   if (token == null) {
-    token = new Token(event.args.tokenId);
+    token = new Token(event.args.tokenId.toString());
     token.contractId = event.address;
 
     try
     {
-      let uri = await  instance.tokenURI(event.args.tokenId);
+      let uri = await  instance.tokenURI(event.args.tokenId.toString());
       if (!uri==null) {
         token.uri = uri;
       }
@@ -68,7 +77,7 @@ export async function handleTransfer(
 
   if (transfer == null) {
     transfer = new Transfer(transferId);
-    transfer.tokenId = event.args.tokenId;
+    transfer.tokenId = event.args.tokenId.toString();
     transfer.fromId = event.args.from;
     transfer.toId = event.args.to;
     transfer.timestamp = BigInt(event.blockTimestamp.getTime());
@@ -108,9 +117,14 @@ export async function handleTransfer(
   catch(e){}
 
   previousOwner.save();
+  logger.info('prev owner stored'+previousOwner.id.toString());
   newOwner.save();
+  logger.info('new owner stored' + newOwner.id.toString());
   token.save();
+  logger.info('token stored'+token.id.toString());
   contract.save();
+  logger.info('contract stored'+contract.id.toString());
   transfer.save();
+  logger.info('transfer stored'+  transfer.id.toString());
   
 }
