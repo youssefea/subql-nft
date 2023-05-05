@@ -58,9 +58,6 @@ export async function handleTransfer(
     token = new Token(event.args.tokenId.toString());
     token.contractId = event.address;
 
-    let uri = await  instance.tokenURI(event.args.tokenId.toString());
-    logger.info('token uri'+uri);
-
     try
     {
       let uri = await  instance.tokenURI(event.args.tokenId.toString());
