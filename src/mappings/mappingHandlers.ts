@@ -25,19 +25,14 @@ export async function handleTransfer(
   
   logger.info('New log found at ' + event.blockNumber.toString());
   let previousOwner = await Owner.get(event.args.from);
-  logger.info('got here 1 ');
   let newOwner = await Owner.get(event.args.to);
-  logger.info('got here 2');
   let token = await Token.get(event.args.tokenId.toString());
-  logger.info('got here 3');
   let transferId = event.transactionHash;
-  logger.info('got here 4');
   let transfer = await Transfer.get(transferId);
-  logger.info('got here 5');
   let contract = await Contract.get(event.address);
-  logger.info('got here ');
   let provider = new ethers.providers.JsonRpcProvider("https://moonbeam.blastapi.io/bc88ffcb-8768-4dc8-aee4-5bbb4e285a73");
   const instance = Erc721Abi__factory.connect(event.address, provider );
+  logger.info('Contract instance initiated'+instance.address.toString());
 
 
   if (previousOwner == null) {
@@ -63,9 +58,13 @@ export async function handleTransfer(
     token = new Token(event.args.tokenId.toString());
     token.contractId = event.address;
 
+    let uri = await  instance.tokenURI(event.args.tokenId.toString());
+    logger.info('token uri'+uri);
+
     try
     {
       let uri = await  instance.tokenURI(event.args.tokenId.toString());
+      logger.info('token uri'+uri);
       if (!uri==null) {
         token.uri = uri;
       }

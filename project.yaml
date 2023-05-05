@@ -29,14 +29,14 @@ network:
     file: ./dist/chaintypes.js
 dataSources:
   - kind: substrate/FrontierEvm
-    startBlock:  2649834 
+    startBlock: 209451
     processor:
       file: "./node_modules/@subql/frontier-evm-processor/dist/bundle.js"
       options:
         # Must be a key of assets
         abi: erc721
         # Contract address (or recipient if transfer) to filter, if `null` should be for contract creation
-        address: "0x1FF2ADAa387dD27c22b31086E658108588eDa03a"
+        address: "0x8fBE243D898e7c88A6724bB9eB13d746614D23d6"
     assets:
       erc721:
         file: ./erc721.abi.json
